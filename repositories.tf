@@ -37,6 +37,13 @@ module "repo_github_config" {
   required_status_checks = [
     "pre-commit",
   ]
+
+  teams = [
+    {
+      team_id    = "fulfillment-wg"
+      permission = "push"
+    }
+  ]
 }
 
 module "repo_dotgithub_private" {
