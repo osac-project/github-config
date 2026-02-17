@@ -207,7 +207,7 @@ module "repo_enhancement_proposals" {
   name                   = "enhancement-proposals"
   description            = "A repository for proposing enhancements to the osac project"
   all_members_permission = "push"
-  required_approvals     = 3
+  required_approvals     = 2
 }
 
 module "repo_fulfillment_common" {
