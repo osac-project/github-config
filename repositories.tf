@@ -244,7 +244,7 @@ module "repo_osac_templates" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "push"
+      permission = "admin"
     }
   ]
 }
