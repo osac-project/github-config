@@ -63,6 +63,7 @@ module "repo_public_template" {
 }
 
 module "repo_fulfillment_api" {
+  archived    = true
   source      = "./modules/common_repository"
   visibility  = "public"
   name        = "fulfillment-api"
@@ -150,6 +151,7 @@ module "repo_cloudkit_aap" {
 }
 
 module "repo_fulfillment_cli" {
+  archived    = true
   source      = "./modules/common_repository"
   visibility  = "public"
   name        = "fulfillment-cli"
@@ -211,6 +213,7 @@ module "repo_enhancement_proposals" {
 }
 
 module "repo_fulfillment_common" {
+  archived    = true
   source      = "./modules/common_repository"
   visibility  = "public"
   name        = "fulfillment-common"
