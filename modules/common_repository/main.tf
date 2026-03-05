@@ -1,6 +1,5 @@
 resource "github_repository" "repo" {
   name                 = var.name
-  archived             = var.archived
   visibility           = var.visibility
   description          = var.description
   auto_init            = true
