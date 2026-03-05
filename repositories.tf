@@ -118,6 +118,12 @@ module "repo_cloudkit_operator" {
       permission = "admin"
     }
   ]
+
+  required_status_checks = [
+    "ci/prow/temp"
+  ]
+
+  required_approvals = null
 }
 
 module "repo_cloudkit_aap" {
@@ -130,6 +136,10 @@ module "repo_cloudkit_aap" {
       team_id    = "fulfillment-wg"
       permission = "admin"
     }
+  ]
+  required_approvals = null
+  required_status_checks = [
+    "ci/prow/temp"
   ]
 }
 
@@ -170,6 +180,13 @@ module "repo_osac_installer" {
       permission = "admin"
     }
   ]
+
+  required_status_checks = [
+    "ci/prow/temp",
+    "ci/prow/images"
+  ]
+
+  required_approvals = null
 }
 
 module "repo_enhancement_proposals" {
@@ -192,6 +209,10 @@ module "repo_osac_test_infra" {
       permission = "admin"
     }
   ]
+  required_approvals = null
+  required_status_checks = [
+    "ci/prow/temp"
+  ]
 }
 
 module "repo_osac_templates" {
@@ -204,6 +225,10 @@ module "repo_osac_templates" {
       team_id    = "fulfillment-wg"
       permission = "admin"
     }
+  ]
+  required_approvals = null
+  required_status_checks = [
+    "ci/prow/temp"
   ]
 }
 
