@@ -46,9 +46,7 @@ resource "github_repository" "repo" {
 resource "github_issue_label" "repo_labels" {
   repository = var.name
 
-  # Generate label blocks from the value of local.values, which by default is initialized
-  # by the contents of the "labels.csv" file.
-  for_each = {
+  for_each = var.archived ? {} : {
     for label in local.labels :
     label.name => label
   }
@@ -63,7 +61,7 @@ resource "github_issue_label" "repo_labels" {
 resource "github_branch_protection" "repo_protection" {
   # This odd looking construct lets us control the creation of the
   # branch protection resource with a boolean variable.
-  count = var.visibility == "private" ? 0 : var.branch_protection ? 1 : 0
+  count = var.archived ? 0 : var.visibility == "private" ? 0 : var.branch_protection ? 1 : 0
 
   repository_id = var.name
   pattern       = "main"
@@ -92,6 +90,7 @@ resource "github_branch_protection" "repo_protection" {
 }
 
 resource "github_repository_collaborators" "repo_collaborators" {
+  count      = var.archived ? 0 : 1
   repository = var.name
 
   # Always grant org-admins push (write) access to repository. This is necessary to support the
