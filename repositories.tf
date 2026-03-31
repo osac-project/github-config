@@ -240,3 +240,16 @@ module "repo_osac_ui" {
     }
   ]
 }
+
+module "repo_host_management_openstack" {
+  source      = "./modules/common_repository"
+  visibility  = "public"
+  name        = "host-management-openstack"
+  description = "OSAC Host Management Operator for OpenStack"
+  teams = [
+    {
+      team_id    = "fulfillment-wg"
+      permission = "admin"
+    }
+  ]
+}
