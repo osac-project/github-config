@@ -1,9 +1,9 @@
-# Innabox Github configuration
+# Open Sovereign AI Cloud Github configuration
 
-This repository contains [OpenTofu] plan to manage the [innabox] GitHub organization.
+This repository contains [OpenTofu] plan to manage the [osac-project] GitHub organization.
 
 
-[innabox]: https://github.com/innabox
+[osac-project]: https://github.com/osac-project
 [opentofu]: https://opentofu.org/
 
 ## How does it work?
@@ -78,7 +78,7 @@ In general, you won't need to do this: the configuration is applied when a pull 
 
 1. Acquire GitHub credentials.
 
-    In order to apply the configuration, OpenTofu needs administrative access to our organization. You will need a token with at least `admin:org` and `repo` privileges for the `innabox` organization. This should be provided in the `GITHUB_TOKEN` environment variable.
+    In order to apply the configuration, OpenTofu needs administrative access to our organization. You will need a token with at least `admin:org` and `repo` privileges for the `osac-project` organization. This should be provided in the `GITHUB_TOKEN` environment variable.
 
 [nerc]: https://nerc.mghpcc.org/
 
