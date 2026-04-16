@@ -266,3 +266,16 @@ module "repo_bare_metal_operator" {
     }
   ]
 }
+
+module "repo_osac_workspace" {
+  source      = "./modules/common_repository"
+  visibility  = "public"
+  name        = "osac-workspace"
+  description = "Workspace for operating on OSAC repositories with AI tooling"
+  teams = [
+    {
+      team_id    = "fulfillment-wg"
+      permission = "admin"
+    }
+  ]
+}
