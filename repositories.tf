@@ -257,7 +257,7 @@ module "repo_host_management_openstack" {
 module "repo_bare_metal_operator" {
   source      = "./modules/common_repository"
   visibility  = "public"
-  name        = "bare-metal-operator"
+  name        = "bare-metal-fulfillment-operator"
   description = "OSAC Operator for Bare Metal Fulfillment"
   teams = [
     {
