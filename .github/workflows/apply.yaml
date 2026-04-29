@@ -29,7 +29,7 @@ jobs:
         id: generate-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.CONFIG_APP_ID }}
+          client-id: Iv23lipEOAvwk5QqNUie
           private-key: ${{ secrets.CONFIG_APP_SECRET }}
           owner: ${{ github.repository_owner }}
       - name: Setup OpenTofu
