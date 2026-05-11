@@ -231,7 +231,7 @@ module "repo_massopencloud_templates" {
 module "repo_osac_ui" {
   source      = "./modules/common_repository"
   visibility  = "public"
-  name        = "osac-ui"
+  name        = "osac-ui-experiment"
   description = "OSAC UI Web Console"
   teams = [
     {
