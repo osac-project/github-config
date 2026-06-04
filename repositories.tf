@@ -280,4 +280,7 @@ module "repo_osac_workspace" {
       permission = "admin"
     }
   ]
+  pages = {
+    build_type = "workflow"
+  }
 }
