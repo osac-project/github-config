@@ -79,6 +79,13 @@ resource "github_branch_protection" "repo_protection" {
     "osac-project/org-admins",
   ]
 
+  dynamic "restrict_pushes" {
+    for_each = var.push_allowances != null ? [1] : []
+    content {
+      push_allowances = var.push_allowances
+    }
+  }
+
   dynamic "required_pull_request_reviews" {
     for_each = var.required_approvals[*]
 

@@ -121,6 +121,16 @@ variable "pages" {
   }
 }
 
+variable "push_allowances" {
+  description = "Actors allowed to push to the protected branch. When set, restricts both direct pushes and PR merges to these actors only. Actor names must begin with '/' for users or 'org-name/' for teams."
+  type        = list(string)
+  default     = null
+  validation {
+    condition     = var.push_allowances == null || length(var.push_allowances) > 0
+    error_message = "push_allowances must be null (disabled) or a non-empty list of actors"
+  }
+}
+
 variable "all_members_permission" {
   description = "Permission for all organization members"
   type        = string

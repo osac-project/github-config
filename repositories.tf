@@ -97,13 +97,14 @@ module "repo_fulfillment_service" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
   required_approvals = null
   required_status_checks = [
     "ci/prow/unit"
   ]
+  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra"]
   pages = {
     build_type = "workflow"
   }
@@ -117,7 +118,7 @@ module "repo_cloudkit_operator" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
 
@@ -126,6 +127,7 @@ module "repo_cloudkit_operator" {
   ]
 
   required_approvals = null
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_cloudkit_aap" {
@@ -136,13 +138,14 @@ module "repo_cloudkit_aap" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
   required_approvals = null
   required_status_checks = [
     "ci/prow/temp"
   ]
+  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_cloudkit_aap_ee" {
@@ -179,7 +182,7 @@ module "repo_osac_installer" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
 
@@ -189,6 +192,7 @@ module "repo_osac_installer" {
   ]
 
   required_approvals = null
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_enhancement_proposals" {
@@ -208,13 +212,14 @@ module "repo_osac_test_infra" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
   required_approvals = null
   required_status_checks = [
     "ci/prow/temp"
   ]
+  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_massopencloud_templates" {
