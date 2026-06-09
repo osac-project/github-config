@@ -71,12 +71,13 @@ resource "github_branch_protection" "repo_protection" {
   required_linear_history         = true
   allows_deletions                = false
   allows_force_pushes             = false
-  enforce_admins                  = false
+  enforce_admins                  = true
   require_conversation_resolution = false
   require_signed_commits          = false
 
   force_push_bypassers = [
     "osac-project/org-admins",
+    "osac-project/wg-infra",
   ]
 
   dynamic "required_pull_request_reviews" {

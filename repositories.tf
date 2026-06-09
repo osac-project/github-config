@@ -1,18 +1,16 @@
 module "repo_issues" {
-  source                 = "./modules/common_repository"
-  name                   = "issues"
-  visibility             = "public"
-  description            = "Issues related to AI in a Box project"
-  use_public_template    = false
-  all_members_permission = "push"
+  source              = "./modules/common_repository"
+  name                = "issues"
+  visibility          = "public"
+  description         = "Issues related to AI in a Box project"
+  use_public_template = false
 }
 
 module "repo_docs" {
-  source                 = "./modules/common_repository"
-  name                   = "docs"
-  description            = "General documentation for the AI in a Box project"
-  use_public_template    = false
-  all_members_permission = "push"
+  source              = "./modules/common_repository"
+  name                = "docs"
+  description         = "General documentation for the AI in a Box project"
+  use_public_template = false
 
   teams = [
     {
@@ -40,9 +38,9 @@ module "repo_github_config" {
 
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "push"
-    }
+    },
   ]
 }
 
@@ -70,7 +68,7 @@ module "repo_managed_cluster_config" {
   description         = "Configuration for OpenShift cluster running ACM w/ Hosted Control Planes"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "push"
     }
   ]
@@ -83,7 +81,7 @@ module "repo_managed_cluster_apps" {
   description = "Argocd apps to deploy resources on the innabox cluster"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "push"
     }
   ]
@@ -96,7 +94,7 @@ module "repo_fulfillment_service" {
   description = "Cloud-in-a-box fulfillment service"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -116,7 +114,7 @@ module "repo_cloudkit_operator" {
   description = "OSAC kubernetes operator"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -135,7 +133,7 @@ module "repo_cloudkit_aap" {
   description = "OSAC AAP configuration and playbooks"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -152,7 +150,7 @@ module "repo_cloudkit_aap_ee" {
   description = "OSAC execution environment for AAP"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -165,7 +163,7 @@ module "repo_cloudkit_operator_config" {
   description = "Configuration for our deployment of the OSAC operator"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -178,7 +176,7 @@ module "repo_osac_installer" {
   description = "Integration repository for installing all OSAC components"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -192,12 +190,11 @@ module "repo_osac_installer" {
 }
 
 module "repo_enhancement_proposals" {
-  source                 = "./modules/common_repository"
-  visibility             = "public"
-  name                   = "enhancement-proposals"
-  description            = "A repository for proposing enhancements to the osac project"
-  all_members_permission = "push"
-  required_approvals     = 2
+  source             = "./modules/common_repository"
+  visibility         = "public"
+  name               = "enhancement-proposals"
+  description        = "A repository for proposing enhancements to the osac project"
+  required_approvals = 2
 }
 
 module "repo_osac_test_infra" {
@@ -207,7 +204,7 @@ module "repo_osac_test_infra" {
   description = "Ansible-based test infrastructure for OSAC end-to-end testing"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -224,7 +221,7 @@ module "repo_massopencloud_templates" {
   description = "OSAC MOC-specific templates"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "push"
     }
   ]
@@ -237,7 +234,7 @@ module "repo_osac_ui" {
   description = "OSAC UI Web Console"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -250,7 +247,7 @@ module "repo_host_management_openstack" {
   description = "OSAC Host Management Operator for OpenStack"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -263,7 +260,7 @@ module "repo_bare_metal_operator" {
   description = "OSAC Operator for Bare Metal Fulfillment"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
@@ -276,13 +273,15 @@ module "repo_osac_workspace" {
   description = "Workspace for operating on OSAC repositories with AI tooling"
   teams = [
     {
-      team_id    = "fulfillment-wg"
+      team_id    = "wg-infra"
       permission = "admin"
     }
   ]
   pages = {
     build_type = "workflow"
-    branch     = "main"
-    path       = "/"
+    source = {
+      branch = "main"
+      path   = "/"
+    }
   }
 }
