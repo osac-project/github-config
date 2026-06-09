@@ -168,7 +168,7 @@ module "repo_cloudkit_aap_ee" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
 }
@@ -181,7 +181,7 @@ module "repo_cloudkit_operator_config" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
 }
@@ -263,7 +263,7 @@ module "repo_osac_ui" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
 }
@@ -276,7 +276,7 @@ module "repo_host_management_openstack" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
 }
@@ -289,7 +289,7 @@ module "repo_bare_metal_operator" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
 }
@@ -302,7 +302,7 @@ module "repo_osac_workspace" {
   teams = [
     {
       team_id    = "fulfillment-wg"
-      permission = "admin"
+      permission = "push"
     }
   ]
   pages = {
