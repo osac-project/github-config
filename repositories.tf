@@ -101,7 +101,7 @@ module "repo_fulfillment_service" {
     },
     {
       team_id    = "wg-infra"
-      permission = "push"
+      permission = "admin"
     }
   ]
   required_approvals = null
@@ -126,7 +126,7 @@ module "repo_cloudkit_operator" {
     },
     {
       team_id    = "wg-infra"
-      permission = "push"
+      permission = "admin"
     }
   ]
 
@@ -150,7 +150,7 @@ module "repo_cloudkit_aap" {
     },
     {
       team_id    = "wg-infra"
-      permission = "push"
+      permission = "admin"
     }
   ]
   required_approvals = null
@@ -198,7 +198,7 @@ module "repo_osac_installer" {
     },
     {
       team_id    = "wg-infra"
-      permission = "push"
+      permission = "admin"
     }
   ]
 
@@ -232,7 +232,7 @@ module "repo_osac_test_infra" {
     },
     {
       team_id    = "wg-infra"
-      permission = "push"
+      permission = "admin"
     }
   ]
   required_approvals = null
