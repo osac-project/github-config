@@ -5,6 +5,9 @@ resource "github_repository" "repo" {
   description          = var.description
   auto_init            = true
   allow_auto_merge     = var.visibility == "private" ? false : true
+  allow_merge_commit   = var.allow_merge_commit
+  allow_squash_merge   = var.allow_squash_merge
+  allow_rebase_merge   = var.allow_rebase_merge
   has_issues           = true
   has_downloads        = false
   has_projects         = false

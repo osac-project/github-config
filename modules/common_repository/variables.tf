@@ -131,6 +131,24 @@ variable "push_allowances" {
   }
 }
 
+variable "allow_merge_commit" {
+  description = "Allow merge commits on pull requests"
+  type        = bool
+  default     = false
+}
+
+variable "allow_squash_merge" {
+  description = "Allow squash merging on pull requests"
+  type        = bool
+  default     = false
+}
+
+variable "allow_rebase_merge" {
+  description = "Allow rebase merging on pull requests"
+  type        = bool
+  default     = true
+}
+
 variable "all_members_permission" {
   description = "Permission for all organization members"
   type        = string
