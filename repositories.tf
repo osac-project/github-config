@@ -109,7 +109,7 @@ module "repo_fulfillment_service" {
   required_status_checks = [
     "ci/prow/unit"
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra"]
   pages = {
     build_type = "workflow"
     source = {
@@ -140,7 +140,7 @@ module "repo_cloudkit_operator" {
   ]
 
   required_approvals = null
-  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_cloudkit_aap" {
@@ -162,7 +162,7 @@ module "repo_cloudkit_aap" {
   required_status_checks = [
     "ci/prow/temp"
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_cloudkit_aap_ee" {
@@ -213,7 +213,7 @@ module "repo_osac_installer" {
   ]
 
   required_approvals = null
-  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_enhancement_proposals" {
@@ -244,7 +244,7 @@ module "repo_osac_test_infra" {
   required_status_checks = [
     "ci/prow/temp"
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra"]
 }
 
 module "repo_massopencloud_templates" {
