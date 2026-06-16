@@ -1,12 +1,9 @@
 # Define where terraform will store the shared state.
 terraform {
   backend "s3" {
-    endpoints = {
-      s3 = "https://stack.nerc.mghpcc.org:13808"
-    }
-    bucket                      = "tfstate"
-    key                         = "innabox.tfstate"
-    region                      = "main"
+    bucket                      = "osac-terraform-state"
+    key                         = "osac.tfstate"
+    region                      = "us-east-1"
     skip_credentials_validation = true
     skip_requesting_account_id  = true
     skip_metadata_api_check     = true
