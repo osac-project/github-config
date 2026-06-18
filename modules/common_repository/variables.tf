@@ -149,6 +149,32 @@ variable "allow_rebase_merge" {
   default     = true
 }
 
+variable "environments" {
+  description = "GitHub environments to create for this repository"
+  type = list(object({
+    name = string
+    reviewers = optional(object({
+      teams = optional(list(string), [])
+      users = optional(list(string), [])
+    }))
+    deployment_branch_policy = optional(object({
+      protected_branches     = optional(bool, true)
+      custom_branch_policies = optional(bool, false)
+    }))
+  }))
+  default = []
+
+  validation {
+    condition     = alltrue([for env in var.environments : trimspace(env.name) != ""])
+    error_message = "All environment names must be non-empty strings."
+  }
+
+  validation {
+    condition     = length(distinct([for env in var.environments : env.name])) == length(var.environments)
+    error_message = "Environment names must be unique; duplicates would cause a for_each key collision."
+  }
+}
+
 variable "all_members_permission" {
   description = "Permission for all organization members"
   type        = string
