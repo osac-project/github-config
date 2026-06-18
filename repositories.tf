@@ -245,6 +245,7 @@ module "repo_osac_test_infra" {
     "ci/prow/temp"
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments    = [{ name = "e2e-test" }]
 }
 
 module "repo_massopencloud_templates" {
