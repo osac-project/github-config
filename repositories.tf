@@ -106,7 +106,7 @@ module "repo_fulfillment_service" {
     }
   ]
   required_approvals = null
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   pages = {
     build_type = "workflow"
     source = {
@@ -151,7 +151,7 @@ module "repo_cloudkit_aap" {
     }
   ]
   required_approvals = null
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
 }
 
 module "repo_cloudkit_aap_ee" {
@@ -224,8 +224,8 @@ module "repo_osac_test_infra" {
     }
   ]
   required_approvals = null
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments    = [{ name = "e2e-test" }]
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments       = [{ name = "e2e-test" }]
 }
 
 module "repo_massopencloud_templates" {
