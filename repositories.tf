@@ -195,8 +195,14 @@ module "repo_osac_installer" {
       permission = "admin"
     }
   ]
+
+  required_status_checks = [
+    "e2e-full-install / e2e"
+  ]
+
   required_approvals = null
   push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments       = [{ name = "e2e-test" }]
 }
 
 module "repo_enhancement_proposals" {
