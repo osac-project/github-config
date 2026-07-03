@@ -275,6 +275,19 @@ module "repo_osac_ui" {
   ]
 }
 
+module "repo_osac_ux" {
+  source      = "./modules/common_repository"
+  visibility  = "public"
+  name        = "osac-ux"
+  description = "OSAC UX Roadmap Console"
+  teams = [
+    {
+      team_id    = "fulfillment-wg"
+      permission = "push"
+    }
+  ]
+}
+
 module "repo_host_management_openstack" {
   source      = "./modules/common_repository"
   visibility  = "public"
