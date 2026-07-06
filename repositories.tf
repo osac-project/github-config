@@ -289,7 +289,7 @@ module "repo_osac_ux" {
   users = [
     {
       username   = "liatb-rh"
-      permission = "maintain"
+      permission = "admin"
     }
   ]
   pages = {
