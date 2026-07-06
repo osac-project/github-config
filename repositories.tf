@@ -293,9 +293,9 @@ module "repo_osac_ux" {
     }
   ]
   pages = {
-    build_type = "workflow"
+    build_type = "legacy"
     source = {
-      branch = "main"
+      branch = "0.1"
       path   = "/"
     }
   }
