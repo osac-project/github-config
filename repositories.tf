@@ -351,3 +351,21 @@ module "repo_osac_workspace" {
     }
   }
 }
+
+module "repo_cluster_tool" {
+  source      = "./modules/common_repository"
+  visibility  = "public"
+  name        = "cluster-tool"
+  description = "Instant OpenShift SNO clusters from snapshots, distributed as OCI images"
+  teams = [
+    {
+      team_id    = "fulfillment-wg"
+      permission = "push"
+    },
+    {
+      team_id    = "wg-infra"
+      permission = "admin"
+    }
+  ]
+  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+}
