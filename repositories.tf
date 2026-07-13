@@ -369,3 +369,27 @@ module "repo_cluster_tool" {
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
 }
+
+module "repo_osac_metering_service" {
+  source      = "./modules/common_repository"
+  visibility  = "public"
+  name        = "osac-metering-service"
+  description = "OSAC metering service"
+  teams = [
+    {
+      team_id    = "fulfillment-wg"
+      permission = "push"
+    },
+    {
+      team_id    = "observability-wg"
+      permission = "push"
+    },
+    {
+      team_id    = "wg-infra"
+      permission = "admin"
+    }
+  ]
+  required_approvals = null
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments       = [{ name = "e2e-test" }]
+}
