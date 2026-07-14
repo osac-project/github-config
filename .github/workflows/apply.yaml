@@ -2,6 +2,15 @@ name: Apply configuration
 
 on:
   workflow_dispatch:
+    inputs:
+      import_address:
+        description: "One-time: Terraform resource address to import (e.g. module.repo_cluster_tool.github_repository.repo). Leave empty for a normal apply."
+        required: false
+        default: ""
+      import_id:
+        description: "One-time: import ID for the resource above (e.g. the repo name for github_repository)."
+        required: false
+        default: ""
   schedule:
     - cron: "17 */4 * * *"
   push:
@@ -42,6 +51,19 @@ jobs:
       - name: TF Validate
         run: |
           tofu validate
+      # Handles a repo that already exists on GitHub (e.g. transferred in
+      # from a personal account, like cluster-tool) but was never brought
+      # into Terraform's state -- apply would otherwise try to create it
+      # via the public_template generate API and fail with "Name already
+      # exists on this account". Manual, one-time use via workflow_dispatch
+      # inputs; a no-op (skipped entirely) for the normal scheduled/push
+      # triggers, which never set these inputs.
+      - name: TF Import (one-time, manual only)
+        if: inputs.import_address != ''
+        run: |
+          tofu import "${{ inputs.import_address }}" "${{ inputs.import_id }}"
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
       - name: TF Apply
         run: |
           tofu apply -concise -auto-approve
