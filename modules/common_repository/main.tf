@@ -97,45 +97,12 @@ resource "github_branch_protection" "repo_protection" {
     }
   }
 
+  required_status_checks {
+    strict   = var.strict_status_checks
+    contexts = var.required_status_checks
+  }
+
   depends_on = [github_repository.repo, github_repository_collaborators.repo_collaborators]
-}
-
-resource "github_repository_ruleset" "status_checks" {
-  count = var.visibility == "private" ? 0 : var.branch_protection && length(var.required_status_checks) > 0 ? 1 : 0
-
-  name        = "ci-status-checks"
-  repository  = github_repository.repo.name
-  target      = "branch"
-  enforcement = "active"
-
-  bypass_actors {
-    actor_id    = 1
-    actor_type  = "OrganizationAdmin"
-    bypass_mode = "always"
-  }
-
-  conditions {
-    ref_name {
-      include = ["~DEFAULT_BRANCH"]
-      exclude = []
-    }
-  }
-
-  rules {
-    required_status_checks {
-      strict_required_status_checks_policy = true
-
-      dynamic "required_check" {
-        for_each = var.required_status_checks
-        content {
-          context        = required_check.value.context
-          integration_id = required_check.value.integration_id
-        }
-      }
-    }
-  }
-
-  depends_on = [github_repository.repo]
 }
 
 resource "github_repository_ruleset" "merge_queue" {

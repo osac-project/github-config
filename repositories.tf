@@ -109,9 +109,10 @@ module "repo_fulfillment_service" {
   required_status_checks = [
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments    = [{ name = "e2e-test" }]
-  merge_queue     = {}
+  push_allowances      = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments         = [{ name = "e2e-test" }]
+  merge_queue          = {}
+  strict_status_checks = false
   pages = {
     build_type = "workflow"
     source = {
@@ -140,9 +141,10 @@ module "repo_cloudkit_operator" {
   required_status_checks = [
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments    = [{ name = "e2e-test" }]
-  merge_queue     = {}
+  push_allowances      = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments         = [{ name = "e2e-test" }]
+  merge_queue          = {}
+  strict_status_checks = false
 }
 
 module "repo_cloudkit_aap" {
@@ -164,9 +166,10 @@ module "repo_cloudkit_aap" {
   required_status_checks = [
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments    = [{ name = "e2e-test" }]
-  merge_queue     = {}
+  push_allowances      = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments         = [{ name = "e2e-test" }]
+  merge_queue          = {}
+  strict_status_checks = false
 }
 
 module "repo_cloudkit_aap_ee" {
@@ -216,9 +219,10 @@ module "repo_osac_installer" {
   ]
 
   required_approvals = null
-  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments       = [{ name = "e2e-test" }]
-  merge_queue        = {}
+  push_allowances      = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments         = [{ name = "e2e-test" }]
+  merge_queue          = {}
+  strict_status_checks = false
 }
 
 module "repo_enhancement_proposals" {
@@ -246,9 +250,10 @@ module "repo_osac_test_infra" {
     }
   ]
   required_approvals = null
-  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments       = [{ name = "e2e-test" }]
-  merge_queue        = {}
+  push_allowances      = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments         = [{ name = "e2e-test" }]
+  merge_queue          = {}
+  strict_status_checks = false
 }
 
 module "repo_massopencloud_templates" {
