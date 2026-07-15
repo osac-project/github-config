@@ -111,6 +111,7 @@ module "repo_fulfillment_service" {
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments    = [{ name = "e2e-test" }]
+  merge_queue     = {}
   pages = {
     build_type = "workflow"
     source = {
@@ -141,6 +142,7 @@ module "repo_cloudkit_operator" {
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments    = [{ name = "e2e-test" }]
+  merge_queue     = {}
 }
 
 module "repo_cloudkit_aap" {
@@ -164,6 +166,7 @@ module "repo_cloudkit_aap" {
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments    = [{ name = "e2e-test" }]
+  merge_queue     = {}
 }
 
 module "repo_cloudkit_aap_ee" {
@@ -215,6 +218,7 @@ module "repo_osac_installer" {
   required_approvals = null
   push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments       = [{ name = "e2e-test" }]
+  merge_queue        = {}
 }
 
 module "repo_enhancement_proposals" {
@@ -244,6 +248,7 @@ module "repo_osac_test_infra" {
   required_approvals = null
   push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments       = [{ name = "e2e-test" }]
+  merge_queue        = {}
 }
 
 module "repo_massopencloud_templates" {
