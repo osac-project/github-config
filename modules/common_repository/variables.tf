@@ -175,6 +175,18 @@ variable "environments" {
   }
 }
 
+variable "merge_queue" {
+  description = "Enable GitHub merge queue for the default branch. When set, a repository ruleset is created that requires PRs to pass through the merge queue before merging."
+  type = object({
+    merge_method                   = optional(string, "SQUASH")
+    min_entries_to_merge           = optional(number, 1)
+    max_entries_to_merge           = optional(number, 5)
+    check_response_timeout_minutes = optional(number, 90)
+    grouping_strategy              = optional(string, "ALLGREEN")
+  })
+  default = null
+}
+
 variable "all_members_permission" {
   description = "Permission for all organization members"
   type        = string

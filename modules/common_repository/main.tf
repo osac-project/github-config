@@ -105,6 +105,33 @@ resource "github_branch_protection" "repo_protection" {
   depends_on = [github_repository.repo, github_repository_collaborators.repo_collaborators]
 }
 
+resource "github_repository_ruleset" "merge_queue" {
+  count       = var.merge_queue != null ? 1 : 0
+  name        = "merge-queue"
+  repository  = github_repository.repo.name
+  target      = "branch"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["~DEFAULT_BRANCH"]
+      exclude = []
+    }
+  }
+
+  rules {
+    merge_queue {
+      merge_method                   = var.merge_queue.merge_method
+      min_entries_to_merge           = var.merge_queue.min_entries_to_merge
+      max_entries_to_merge           = var.merge_queue.max_entries_to_merge
+      check_response_timeout_minutes = var.merge_queue.check_response_timeout_minutes
+      grouping_strategy              = var.merge_queue.grouping_strategy
+    }
+  }
+
+  depends_on = [github_repository.repo]
+}
+
 resource "github_repository_environment" "env" {
   for_each = {
     for env in var.environments :
