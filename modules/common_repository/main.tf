@@ -105,6 +105,11 @@ resource "github_branch_protection" "repo_protection" {
   depends_on = [github_repository.repo, github_repository_collaborators.repo_collaborators]
 }
 
+data "github_team" "wg_infra" {
+  count = var.merge_queue != null ? 1 : 0
+  slug  = "wg-infra"
+}
+
 resource "github_repository_ruleset" "merge_queue" {
   count       = var.merge_queue != null ? 1 : 0
   name        = "merge-queue"
@@ -117,6 +122,25 @@ resource "github_repository_ruleset" "merge_queue" {
       include = ["~DEFAULT_BRANCH"]
       exclude = []
     }
+  }
+
+  # Tide (openshift-merge-bot) and human admins/wg-infra merge PRs directly today;
+  # without an explicit bypass, GitHub rejects any merge that doesn't go through the queue.
+  bypass_actors {
+    actor_type  = "OrganizationAdmin"
+    bypass_mode = "pull_request"
+  }
+
+  bypass_actors {
+    actor_id    = data.github_team.wg_infra[0].id
+    actor_type  = "Team"
+    bypass_mode = "pull_request"
+  }
+
+  bypass_actors {
+    actor_id    = 412865 # openshift-merge-bot GitHub App (Tide)
+    actor_type  = "Integration"
+    bypass_mode = "pull_request"
   }
 
   rules {
