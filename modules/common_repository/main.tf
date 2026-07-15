@@ -105,6 +105,11 @@ resource "github_branch_protection" "repo_protection" {
   depends_on = [github_repository.repo, github_repository_collaborators.repo_collaborators]
 }
 
+data "github_team" "merge_queue_bypass" {
+  for_each = var.merge_queue != null ? toset(["wg-infra", "org-admins"]) : []
+  slug     = each.value
+}
+
 resource "github_repository_ruleset" "merge_queue" {
   count       = var.merge_queue != null ? 1 : 0
   name        = "merge-queue"
@@ -116,6 +121,15 @@ resource "github_repository_ruleset" "merge_queue" {
     ref_name {
       include = ["~DEFAULT_BRANCH"]
       exclude = []
+    }
+  }
+
+  dynamic "bypass_actors" {
+    for_each = data.github_team.merge_queue_bypass
+    content {
+      actor_id    = bypass_actors.value.id
+      actor_type  = "Team"
+      bypass_mode = "pull_request"
     }
   }
 
