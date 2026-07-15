@@ -36,7 +36,7 @@ module "repo_github_config" {
   use_public_template = false
   required_approvals  = 2
   required_status_checks = [
-    { context = "pre-commit", integration_id = 15368 },
+    "pre-commit",
   ]
 
   teams = [
@@ -107,7 +107,7 @@ module "repo_fulfillment_service" {
   ]
   required_approvals = null
   required_status_checks = [
-    { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
+    "e2e-vmaas-full-install / e2e"
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments    = [{ name = "e2e-test" }]
@@ -137,7 +137,7 @@ module "repo_cloudkit_operator" {
   ]
   required_approvals = null
   required_status_checks = [
-    { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
+    "e2e-vmaas-full-install / e2e"
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments    = [{ name = "e2e-test" }]
@@ -160,7 +160,7 @@ module "repo_cloudkit_aap" {
   ]
   required_approvals = null
   required_status_checks = [
-    { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
+    "e2e-vmaas-full-install / e2e"
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments    = [{ name = "e2e-test" }]
@@ -209,7 +209,7 @@ module "repo_osac_installer" {
   ]
 
   required_status_checks = [
-    { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
+    "e2e-vmaas-full-install / e2e"
   ]
 
   required_approvals = null

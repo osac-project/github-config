@@ -1,0 +1,122 @@
+name: Plan
+
+on:
+  pull_request_target:
+    paths:
+      - "**/*.tf"
+      - "**/*.csv"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    environment: plan
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      CONFIG_APP_CLIENT_ID: Iv23lipEOAvwk5QqNUie
+      TF_CLI_ARGS: "-no-color"
+      TF_IN_AUTOMATION: "true"
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3
+        with:
+          client-id: ${{ env.CONFIG_APP_CLIENT_ID }}
+          private-key: ${{ secrets.CONFIG_APP_SECRET }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4  # v2
+        with:
+          tofu_wrapper: false
+
+      - name: TF init
+        run: tofu init
+
+      - name: TF Validate
+        run: tofu validate
+
+      - name: TF Plan
+        id: plan
+        run: |
+          set +e
+          tofu plan -detailed-exitcode 2>&1 | tee plan_output.txt
+          exitcode=${PIPESTATUS[0]}
+          echo "exitcode=$exitcode" >> "$GITHUB_OUTPUT"
+          if [ "$exitcode" -eq 1 ]; then
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+
+      - name: Comment plan on PR
+        if: always() && steps.plan.outcome != 'skipped'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
+        with:
+          script: |
+            const fs = require('fs');
+            const raw = fs.readFileSync('plan_output.txt', 'utf8');
+            const plan = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const exitcode = '${{ steps.plan.outputs.exitcode }}';
+
+            let summary;
+            if (exitcode === '0') {
+              summary = 'No changes. Infrastructure is up-to-date.';
+            } else if (exitcode === '2') {
+              summary = 'Changes detected. Review the plan below.';
+            } else {
+              summary = 'Plan failed. See details below.';
+            }
+
+            const marker = '<!-- tofu-plan -->';
+            const body = [
+              marker,
+              `### OpenTofu Plan`,
+              '',
+              summary,
+              '',
+              '<details><summary>Show plan output</summary>',
+              '',
+              `<pre>${plan.substring(0, 60000)}</pre>`,
+              '',
+              '</details>',
+              '',
+              `*Commit: ${context.payload.pull_request.head.sha}*`,
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
