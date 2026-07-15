@@ -191,6 +191,16 @@ variable "merge_queue" {
     grouping_strategy              = optional(string, "ALLGREEN")
   })
   default = null
+
+  validation {
+    condition     = var.merge_queue == null || contains(["MERGE", "SQUASH", "REBASE"], var.merge_queue.merge_method)
+    error_message = "merge_method must be MERGE, SQUASH, or REBASE"
+  }
+
+  validation {
+    condition     = var.merge_queue == null || contains(["ALLGREEN", "HEADGREEN"], var.merge_queue.grouping_strategy)
+    error_message = "grouping_strategy must be ALLGREEN or HEADGREEN"
+  }
 }
 
 variable "all_members_permission" {
