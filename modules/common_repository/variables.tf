@@ -26,6 +26,12 @@ variable "required_status_checks" {
   default     = []
 }
 
+variable "strict_status_checks" {
+  description = "Require the PR branch to be up to date with the base branch before merging. Disable when using merge queues, which handle this automatically."
+  type        = bool
+  default     = true
+}
+
 variable "visibility" {
   description = "Repository visibility (public or private)"
   type        = string

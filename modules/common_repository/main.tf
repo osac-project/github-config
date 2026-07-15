@@ -98,7 +98,7 @@ resource "github_branch_protection" "repo_protection" {
   }
 
   required_status_checks {
-    strict   = true
+    strict   = var.strict_status_checks
     contexts = var.required_status_checks
   }
 
