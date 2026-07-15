@@ -26,6 +26,12 @@ variable "required_status_checks" {
   default     = []
 }
 
+variable "strict_status_checks" {
+  description = "Require the PR branch to be up to date with the base branch before merging. Disable when using merge queues, which handle this automatically."
+  type        = bool
+  default     = true
+}
+
 variable "visibility" {
   description = "Repository visibility (public or private)"
   type        = string
@@ -172,6 +178,28 @@ variable "environments" {
   validation {
     condition     = length(distinct([for env in var.environments : env.name])) == length(var.environments)
     error_message = "Environment names must be unique; duplicates would cause a for_each key collision."
+  }
+}
+
+variable "merge_queue" {
+  description = "Enable GitHub merge queue for the default branch. When set, a repository ruleset is created that requires PRs to pass through the merge queue before merging."
+  type = object({
+    merge_method                   = optional(string, "SQUASH")
+    min_entries_to_merge           = optional(number, 1)
+    max_entries_to_merge           = optional(number, 5)
+    check_response_timeout_minutes = optional(number, 90)
+    grouping_strategy              = optional(string, "ALLGREEN")
+  })
+  default = null
+
+  validation {
+    condition     = var.merge_queue == null || contains(["MERGE", "SQUASH", "REBASE"], var.merge_queue.merge_method)
+    error_message = "merge_method must be MERGE, SQUASH, or REBASE"
+  }
+
+  validation {
+    condition     = var.merge_queue == null || contains(["ALLGREEN", "HEADGREEN"], var.merge_queue.grouping_strategy)
+    error_message = "grouping_strategy must be ALLGREEN or HEADGREEN"
   }
 }
 
