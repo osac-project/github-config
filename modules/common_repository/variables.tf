@@ -178,6 +178,12 @@ variable "environments" {
   }
 }
 
+variable "ruleset_bypass_team_ids" {
+  description = "Team database IDs allowed to bypass the CI status checks ruleset"
+  type        = list(number)
+  default     = []
+}
+
 variable "all_members_permission" {
   description = "Permission for all organization members"
   type        = string
