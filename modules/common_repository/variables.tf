@@ -21,9 +21,12 @@ variable "required_approvals" {
 }
 
 variable "required_status_checks" {
-  description = "A list of status checks that must pass before a PR can merge"
-  type        = list(string)
-  default     = []
+  description = "Status checks that must pass before a PR can merge"
+  type = list(object({
+    context        = string
+    integration_id = optional(number)
+  }))
+  default = []
 }
 
 variable "visibility" {
