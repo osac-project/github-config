@@ -114,6 +114,15 @@ resource "github_repository_ruleset" "status_checks" {
     bypass_mode = "always"
   }
 
+  dynamic "bypass_actors" {
+    for_each = var.ruleset_bypass_team_ids
+    content {
+      actor_id    = bypass_actors.value
+      actor_type  = "Team"
+      bypass_mode = "always"
+    }
+  }
+
   conditions {
     ref_name {
       include = ["~DEFAULT_BRANCH"]

@@ -109,8 +109,9 @@ module "repo_fulfillment_service" {
   required_status_checks = [
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments    = [{ name = "e2e-test" }]
+  ruleset_bypass_team_ids = [github_team.all["wg-infra"].id]
+  push_allowances         = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments            = [{ name = "e2e-test" }]
   pages = {
     build_type = "workflow"
     source = {
@@ -139,8 +140,9 @@ module "repo_cloudkit_operator" {
   required_status_checks = [
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments    = [{ name = "e2e-test" }]
+  ruleset_bypass_team_ids = [github_team.all["wg-infra"].id]
+  push_allowances         = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments            = [{ name = "e2e-test" }]
 }
 
 module "repo_cloudkit_aap" {
@@ -162,8 +164,9 @@ module "repo_cloudkit_aap" {
   required_status_checks = [
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
   ]
-  push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments    = [{ name = "e2e-test" }]
+  ruleset_bypass_team_ids = [github_team.all["wg-infra"].id]
+  push_allowances         = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments            = [{ name = "e2e-test" }]
 }
 
 module "repo_cloudkit_aap_ee" {
@@ -212,9 +215,10 @@ module "repo_osac_installer" {
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
   ]
 
-  required_approvals = null
-  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments       = [{ name = "e2e-test" }]
+  required_approvals      = null
+  ruleset_bypass_team_ids = [github_team.all["wg-infra"].id]
+  push_allowances         = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments            = [{ name = "e2e-test" }]
 }
 
 module "repo_enhancement_proposals" {
@@ -365,6 +369,26 @@ module "repo_cluster_tool" {
     }
   ]
   push_allowances = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+}
+
+module "repo_osac_csi_driver" {
+  source      = "./modules/common_repository"
+  visibility  = "public"
+  name        = "osac-csi-driver"
+  description = "OSAC CSI driver for persistent storage"
+  teams = [
+    {
+      team_id    = "fulfillment-wg"
+      permission = "push"
+    },
+    {
+      team_id    = "wg-infra"
+      permission = "admin"
+    }
+  ]
+  required_approvals = null
+  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  environments       = [{ name = "e2e-test" }]
 }
 
 module "repo_osac_metering_service" {
