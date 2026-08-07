@@ -151,7 +151,9 @@ resource "github_repository_ruleset" "status_checks" {
 
   rules {
     required_status_checks {
-      strict_required_status_checks_policy = true
+      # When merge queue is enabled, strict is unnecessary — the queue tests
+      # each PR against latest main before merging.
+      strict_required_status_checks_policy = var.merge_queue != null ? false : true
 
       dynamic "required_check" {
         for_each = var.required_status_checks
@@ -159,6 +161,19 @@ resource "github_repository_ruleset" "status_checks" {
           context        = required_check.value.context
           integration_id = required_check.value.integration_id
         }
+      }
+    }
+
+    dynamic "merge_queue" {
+      for_each = var.merge_queue[*]
+      content {
+        check_response_timeout_minutes    = merge_queue.value.check_response_timeout_minutes
+        grouping_strategy                 = merge_queue.value.grouping_strategy
+        max_entries_to_build              = merge_queue.value.max_entries_to_build
+        max_entries_to_merge              = merge_queue.value.max_entries_to_merge
+        merge_method                      = merge_queue.value.merge_method
+        min_entries_to_merge              = merge_queue.value.min_entries_to_merge
+        min_entries_to_merge_wait_minutes = merge_queue.value.min_entries_to_merge_wait_minutes
       }
     }
   }

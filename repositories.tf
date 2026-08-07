@@ -139,22 +139,35 @@ module "repo_osac" {
       permission = "admin"
     }
   ]
+  # Prow plugins handle approval via OWNERS (lgtm/approved labels), not native
+  # GitHub reviews. The label-gate workflow enforces label presence as a status
+  # check for the merge queue.
   required_approvals = null
-  # osac's own CI (all 3 e2e install flavors) is live and has been passing on
-  # real PRs for a while now -- require all 3, not just vmaas like the
-  # pre-merge component repos below, since this is now the repo everything
-  # actually merges into.
   required_status_checks = [
     { context = "e2e-vmaas-full-install / e2e", integration_id = 15368 },
     { context = "e2e-bmaas-full-install / e2e", integration_id = 15368 },
     { context = "e2e-caas-full-install / e2e", integration_id = 15368 },
+    # Reads Prow-set labels (lgtm, approved, jira/valid-reference) and converts
+    # them to a status check the merge queue can gate on.
+    { context = "label-gate / check-labels", integration_id = 15368 },
   ]
   # Preserve subtree-merge history/blame going forward -- squash-merging on the
   # mono-repo would collapse that history for every commit after cutover, so
   # it's disabled at the GitHub level, not just by convention.
   allow_squash_merge      = false
   ruleset_bypass_team_ids = [github_team.all["wg-infra"].id]
-  push_allowances         = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
+  # openshift-merge-robot removed: Tide no longer merges; merge queue handles it.
+  push_allowances = ["osac-project/wg-infra", "osac-project/org-admins"]
+
+  merge_queue = {
+    merge_method                      = "REBASE"
+    max_entries_to_build              = 3
+    max_entries_to_merge              = 5
+    min_entries_to_merge              = 1
+    min_entries_to_merge_wait_minutes = 5
+    check_response_timeout_minutes    = 120
+    grouping_strategy                 = "ALLGREEN"
+  }
 }
 
 module "repo_cloudkit_operator" {

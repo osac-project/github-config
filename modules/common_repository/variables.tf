@@ -190,6 +190,20 @@ variable "ruleset_bypass_team_ids" {
   default     = []
 }
 
+variable "merge_queue" {
+  description = "Merge queue configuration. When set, enables merge queue on the default branch and disables strict status checks (the queue handles freshness)."
+  type = object({
+    merge_method                      = optional(string, "MERGE")
+    max_entries_to_build              = optional(number, 5)
+    max_entries_to_merge              = optional(number, 5)
+    min_entries_to_merge              = optional(number, 1)
+    min_entries_to_merge_wait_minutes = optional(number, 5)
+    check_response_timeout_minutes    = optional(number, 60)
+    grouping_strategy                 = optional(string, "ALLGREEN")
+  })
+  default = null
+}
+
 variable "all_members_permission" {
   description = "Permission for all organization members"
   type        = string
