@@ -476,32 +476,3 @@ module "repo_osac_csi_driver" {
   push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
   environments       = [{ name = "e2e-test" }]
 }
-
-module "repo_osac_metering" {
-  source      = "./modules/common_repository"
-  visibility  = "public"
-  name        = "osac-metering"
-  description = "OSAC metering service, installation chart and provider adapters"
-  teams = [
-    {
-      team_id    = "fulfillment-wg"
-      permission = "push"
-    },
-    {
-      team_id    = "observability-wg"
-      permission = "push"
-    },
-    {
-      team_id    = "wg-infra"
-      permission = "admin"
-    }
-  ]
-  required_approvals = null
-  push_allowances    = ["/openshift-merge-robot", "osac-project/wg-infra", "osac-project/org-admins"]
-  environments       = [{ name = "e2e-test" }]
-}
-
-moved {
-  from = module.repo_osac_metering_service
-  to   = module.repo_osac_metering
-}
