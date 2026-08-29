@@ -373,7 +373,7 @@ module "repo_osac_ux" {
   pages = {
     build_type = "legacy"
     source = {
-      branch = "0.1"
+      branch = "gh-pages"
       path   = "/"
     }
   }
