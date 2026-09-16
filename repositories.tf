@@ -13,6 +13,10 @@ module "repo_docs" {
   description            = "General documentation for the AI in a Box project"
   use_public_template    = false
   all_members_permission = "push"
+  # Merged into osac mono-repo docs/, with full commit history preserved;
+  # archived.
+  archived    = true
+  lock_branch = true
 
   teams = [
     {
