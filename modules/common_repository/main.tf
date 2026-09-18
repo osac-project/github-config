@@ -1,21 +1,21 @@
 resource "github_repository" "repo" {
-  name                 = var.name
-  archived             = var.archived
-  visibility           = var.visibility
-  description          = var.description
-  auto_init            = true
-  allow_auto_merge     = var.visibility == "private" ? false : true
-  allow_merge_commit   = var.allow_merge_commit
-  allow_squash_merge   = var.allow_squash_merge
-  allow_rebase_merge   = var.allow_rebase_merge
+  name                        = var.name
+  archived                    = var.archived
+  visibility                  = var.visibility
+  description                 = var.description
+  auto_init                   = true
+  allow_auto_merge            = var.visibility == "private" ? false : true
+  allow_merge_commit          = var.allow_merge_commit
+  allow_squash_merge          = var.allow_squash_merge
+  allow_rebase_merge          = var.allow_rebase_merge
   squash_merge_commit_title   = "PR_TITLE"
   squash_merge_commit_message = "PR_BODY"
-  has_issues           = true
-  has_downloads        = false
-  has_projects         = false
-  has_wiki             = false
-  is_template          = var.is_template
-  vulnerability_alerts = var.vulnerability_alerts
+  has_issues                  = true
+  has_downloads               = false
+  has_projects                = false
+  has_wiki                    = false
+  is_template                 = var.is_template
+  vulnerability_alerts        = var.vulnerability_alerts
 
   dynamic "template" {
     # Use the public_template repository as a template unless the repository is
