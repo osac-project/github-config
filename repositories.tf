@@ -396,6 +396,9 @@ module "repo_osac_ui" {
   visibility  = "public"
   name        = "osac-ui"
   description = "OSAC UI Web Console"
+  # Merged into osac mono-repo, with full commit history preserved; archived.
+  archived    = true
+  lock_branch = true
   teams = [
     {
       team_id    = "fulfillment-wg"
