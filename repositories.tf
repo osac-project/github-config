@@ -325,6 +325,8 @@ module "repo_enhancement_proposals" {
     { context = "check-human-reviews", integration_id = 15368 },
     # Job id in enhancement-proposals/.github/workflows/pre-commit.yaml.
     { context = "pre-commit", integration_id = 15368 },
+    # CodeRabbit review must complete before an enhancement proposal can merge.
+    { context = "CodeRabbit" },
   ]
   ruleset_bypass_team_ids = [github_team.all["wg-infra"].id]
 }
