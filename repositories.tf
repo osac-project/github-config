@@ -325,14 +325,9 @@ module "repo_enhancement_proposals" {
   name                   = "enhancement-proposals"
   description            = "A repository for proposing enhancements to the osac project"
   all_members_permission = "push"
-  required_approvals     = 2
-  required_status_checks = [
-    # Job id in enhancement-proposals/.github/workflows/review-gate.yml.
-    { context = "check-human-reviews", integration_id = 15368 },
-    # Job id in enhancement-proposals/.github/workflows/pre-commit.yaml.
-    { context = "pre-commit", integration_id = 15368 },
-  ]
-  ruleset_bypass_team_ids = [github_team.all["wg-infra"].id]
+  # Prow plugins handle approval via OWNERS (lgtm/approved labels), not native
+  # GitHub reviews.
+  required_approvals = null
   teams = [
     {
       team_id    = "wg-osac-storage"
