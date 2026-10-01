@@ -202,7 +202,7 @@ module "repo_osac" {
   environments = [{
     name = "copr-production"
     reviewers = {
-      teams = ["wg-infra"]
+      teams = [github_team.all["wg-infra"].id]
     }
   }]
 
