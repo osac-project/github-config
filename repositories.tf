@@ -199,6 +199,13 @@ module "repo_osac" {
     github_team.all["infrastructure"].id,
   ]
 
+  environments = [{
+    name = "copr-production"
+    reviewers = {
+      teams = ["wg-infra"]
+    }
+  }]
+
   merge_queue = {
     merge_method                      = "SQUASH"
     max_entries_to_build              = 4
