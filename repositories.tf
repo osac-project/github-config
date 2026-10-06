@@ -134,10 +134,11 @@ module "repo_fulfillment_service" {
 }
 
 module "repo_osac" {
-  source      = "./modules/common_repository"
-  visibility  = "public"
-  name        = "osac"
-  description = "OSAC mono-repo: consolidates fulfillment-service, osac-operator, osac-aap, and osac-installer"
+  source                 = "./modules/common_repository"
+  visibility             = "public"
+  name                   = "osac"
+  description            = "OSAC mono-repo: consolidates fulfillment-service, osac-operator, osac-aap, and osac-installer"
+  all_members_permission = "push"
   teams = [
     {
       team_id    = "fulfillment-wg"
