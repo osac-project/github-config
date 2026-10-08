@@ -415,6 +415,8 @@ module "repo_osac_ci" {
   # The repository already exists (created by hand), so never generate it
   # from the public template; it has to be imported into state first.
   use_public_template = false
+  # Always show "Update branch" (merge or rebase) on this repository's PRs.
+  allow_update_branch = true
   teams = [
     {
       team_id    = "wg-infra"
@@ -422,9 +424,12 @@ module "repo_osac_ci" {
     }
   ]
   # The planner can eventually decide what merges in other repositories, so
-  # every change needs a code owner (CODEOWNERS: wg-infra) to approve it.
+  # every change needs a code owner (CODEOWNERS: wg-infra) to approve it, and
+  # an approval must not stay valid after the code changes. Until OSAC CI is
+  # a required check, GitHub is the only thing enforcing this.
   required_approvals         = 1
   require_code_owner_reviews = true
+  dismiss_stale_reviews      = true
   required_status_checks = [
     { context = "lint", integration_id = 15368 },
     { context = "unit-tests", integration_id = 15368 },

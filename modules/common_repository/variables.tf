@@ -26,6 +26,18 @@ variable "require_code_owner_reviews" {
   default     = false
 }
 
+variable "dismiss_stale_reviews" {
+  description = "Dismiss approving reviews when new commits are pushed. Only has an effect when required_approvals is not null."
+  type        = bool
+  default     = false
+}
+
+variable "allow_update_branch" {
+  description = "Always show the Update branch button on pull requests, even when the branch is not required to be up to date"
+  type        = bool
+  default     = false
+}
+
 variable "required_status_checks" {
   description = "Status checks that must pass before a PR can merge"
   type = list(object({

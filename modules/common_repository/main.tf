@@ -5,6 +5,7 @@ resource "github_repository" "repo" {
   description                 = var.description
   auto_init                   = true
   allow_auto_merge            = var.visibility == "private" ? false : true
+  allow_update_branch         = var.allow_update_branch
   allow_merge_commit          = var.allow_merge_commit
   allow_squash_merge          = var.allow_squash_merge
   allow_rebase_merge          = var.allow_rebase_merge
@@ -101,6 +102,7 @@ resource "github_branch_protection" "repo_protection" {
     content {
       required_approving_review_count = var.required_approvals
       require_code_owner_reviews      = var.require_code_owner_reviews
+      dismiss_stale_reviews           = var.dismiss_stale_reviews
     }
   }
 
