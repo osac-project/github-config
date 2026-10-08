@@ -138,6 +138,9 @@ module "repo_osac" {
   visibility  = "public"
   name        = "osac"
   description = "OSAC mono-repo: consolidates fulfillment-service, osac-operator, osac-aap, and osac-installer"
+  # Always show "Update branch" (merge or rebase). The merge queue does not
+  # require up-to-date branches, so GitHub otherwise hides the button.
+  allow_update_branch = true
   teams = [
     {
       team_id    = "fulfillment-wg"
