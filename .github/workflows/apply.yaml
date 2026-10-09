@@ -19,14 +19,6 @@ on:
         description: "One-time: comma-separated Terraform resource addresses to exclude from this apply (e.g. a resource that's known-broken and blocking every other pending change atomically, while a permanent fix is prepared). Leave empty for a normal apply."
         required: false
         default: ""
-  schedule:
-    - cron: "17 */4 * * *"
-  push:
-    paths:
-      - "**/*.tf"
-      - "**/*.csv"
-    branches:
-      - main
 
 concurrency:
   # This workflow has no pull_request trigger, so github.event.pull_request.number
