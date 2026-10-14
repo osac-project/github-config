@@ -147,43 +147,17 @@ module "repo_osac" {
       permission = "push"
     }
   ]
-  # Prow plugins handle approval via OWNERS (lgtm/approved labels), not native
-  # GitHub reviews. The label-gate workflow enforces label presence as a status
-  # check for the merge queue.
-  required_approvals = null
+  # Native GitHub review: one approval, dropped when a new commit is pushed. Prow stays only for the Jira reference, the
+  # Jira lifecycle and cherry-picks.
+  required_approvals    = 1
+  dismiss_stale_reviews = true
+  # Two required checks, both posted by GitHub Actions: `CI` is the one job that adds up every cheap check that applies
+  # to the change (ci.yml; a part that does not apply is skipped inside it), and `jira-reference` says the title names a
+  # Jira issue or NO-ISSUE (the Prow-set label jira/valid-reference). The full-install E2E is required in a second step,
+  # once its workflows are on main.
   required_status_checks = [
-    { context = "e2e-vmaas-gate", integration_id = 15368 },
-    { context = "e2e-bmaas-gate", integration_id = 15368 },
-    { context = "e2e-caas-gate", integration_id = 15368 },
-    # Reads Prow-set labels (lgtm, approved, jira/valid-reference) and converts
-    # them to a status check the merge queue can gate on.
-    { context = "check-labels", integration_id = 15368 },
-    # Names match GitHub Actions job `name:` (or job id if unnamed). Job-level
-    # `if:` skips report success, so docs-only PRs are not blocked.
-    { context = "pre-commit", integration_id = 15368 },
-    { context = "Check generated code (proto)", integration_id = 15368 },
-    { context = "Run unit tests", integration_id = 15368 },
-    { context = "Run unit tests (osac-metering)", integration_id = 15368 },
-    { context = "Run unit tests (osac-metering/adapters)", integration_id = 15368 },
-    { context = "Run unit tests (osac-metering/schema)", integration_id = 15368 },
-    { context = "Run integration test (fulfillment-service)", integration_id = 15368 },
-    { context = "Run integration test (osac-operator)", integration_id = 15368 },
-    { context = "Run integration test (osac-aap)", integration_id = 15368 },
-    { context = "Run integration test (osac-installer)", integration_id = 15368 },
-    { context = "Run integration test (bare-metal-fulfillment-operator)", integration_id = 15368 },
-    # Cheap lints and component unit tests. Step skip reports success when
-    # that path did not change, so unrelated PRs are not blocked.
-    { context = "ansible-lint", integration_id = 15368 },
-    { context = "Check Python code", integration_id = 15368 },
-    { context = "Check Go and proto code", integration_id = 15368 },
-    { context = "Build binaries", integration_id = 15368 },
-    { context = "dependency-review", integration_id = 15368 },
-    { context = "Lint Helm charts (osac-installer)", integration_id = 15368 },
-    { context = "Check Helm CRD sync (osac-operator)", integration_id = 15368 },
-    { context = "Check Helm CRD sync (bare-metal-fulfillment-operator)", integration_id = 15368 },
-    { context = "Run darwin keychain tests", integration_id = 15368 },
-    { context = "Run unit tests (osac-operator)", integration_id = 15368 },
-    { context = "Run unit tests (bare-metal-fulfillment-operator)", integration_id = 15368 },
+    { context = "CI", integration_id = 15368 },
+    { context = "jira-reference", integration_id = 15368 },
   ]
   ruleset_bypass_team_ids = [
     github_team.all["managers"].id,
