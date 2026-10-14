@@ -151,13 +151,18 @@ module "repo_osac" {
   # Jira lifecycle and cherry-picks.
   required_approvals    = 1
   dismiss_stale_reviews = true
-  # Two required checks, both posted by GitHub Actions: `CI` is the one job that adds up every cheap check that applies
-  # to the change (ci.yml; a part that does not apply is skipped inside it), and `jira-reference` says the title names a
-  # Jira issue or NO-ISSUE (the Prow-set label jira/valid-reference). The full-install E2E is required in a second step,
-  # once its workflows are on main.
+  # A path listed in CODEOWNERS needs approval from its owner team (today the CI definition under .github/; a team adds
+  # its own folders by a pull request to CODEOWNERS), and a path with no owner needs nobody in particular.
+  require_code_owner_reviews = true
+  # Three required checks. `CI` is the one job that adds up every cheap check that applies to the change (ci.yml; a part
+  # that does not apply is skipped inside it) and `jira-reference` says the title names a Jira issue or NO-ISSUE (the
+  # Prow-set label jira/valid-reference); both are posted by GitHub Actions. `E2E` is the full-install suites on a real
+  # cluster (e2e-pr.yml for a pull request, e2e-queue.yml for a merge queue entry). It is required from the OSAC CI
+  # app only (integration id 4966101, the app that writes it), so a workflow that is not that app cannot satisfy it.
   required_status_checks = [
     { context = "CI", integration_id = 15368 },
     { context = "jira-reference", integration_id = 15368 },
+    { context = "E2E", integration_id = 4966101 },
   ]
   ruleset_bypass_team_ids = [
     github_team.all["managers"].id,
