@@ -344,6 +344,9 @@ module "repo_enhancement_proposals" {
   # Prow plugins handle approval via OWNERS (lgtm/approved labels), not native
   # GitHub reviews.
   required_approvals = null
+  # Enhancement proposals are documentation-only; requiring branches to be
+  # up-to-date before merging adds unnecessary friction without safety benefit.
+  strict_required_status_checks = false
   required_status_checks = [
     # Job id in enhancement-proposals/.github/workflows/review-gate.yml.
     { context = "check-human-reviews", integration_id = 15368 },

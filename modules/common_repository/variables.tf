@@ -222,6 +222,12 @@ variable "merge_queue" {
   default = null
 }
 
+variable "strict_required_status_checks" {
+  description = "Require branches to be up to date before merging (strict status checks). Defaults to true when merge_queue is not enabled, false when it is. Set explicitly to override the default for a specific repository."
+  type        = bool
+  default     = null
+}
+
 variable "all_members_permission" {
   description = "Permission for all organization members"
   type        = string

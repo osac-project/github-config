@@ -164,7 +164,7 @@ resource "github_repository_ruleset" "status_checks" {
     required_status_checks {
       # When merge queue is enabled, strict is unnecessary — the queue tests
       # each PR against latest main before merging.
-      strict_required_status_checks_policy = var.merge_queue != null ? false : true
+      strict_required_status_checks_policy = var.strict_required_status_checks != null ? var.strict_required_status_checks : (var.merge_queue != null ? false : true)
 
       dynamic "required_check" {
         for_each = var.required_status_checks
