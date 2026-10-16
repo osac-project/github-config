@@ -196,6 +196,10 @@ module "repo_osac" {
     { context = "Run darwin keychain tests", integration_id = 15368 },
     { context = "Run unit tests (osac-operator)", integration_id = 15368 },
     { context = "Run unit tests (bare-metal-fulfillment-operator)", integration_id = 15368 },
+    # Trial: the policy-driven verdict of osac-project/osac-ci, required beside the checks above (nothing above is
+    # retired). Posted by the built-in Actions token on pull requests (osac-ci.yml) and on merge-queue commits
+    # (osac-ci-queue.yml). Remove this line to go back to the checks above alone.
+    { context = "OSAC CI", integration_id = 15368 },
   ]
   ruleset_bypass_team_ids = [
     github_team.all["wg-infra"].id,
