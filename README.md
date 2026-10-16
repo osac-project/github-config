@@ -89,13 +89,11 @@ In general, you won't need to do this: the configuration is applied when a pull 
 
 1. Acquire S3 credentials.
 
-    OpenTofu maintains state information about the target infrastructure; you need this state in order to plan and apply the configuration. We store this information in an S3 bucket provided by the [NERC]. You need appropriate AWS credentials in order for OpenTofu to access the cached state. These should be provided in the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
+    OpenTofu maintains state information about the target infrastructure; you need this state in order to plan and apply the configuration. We store this information in the `osac-terraform-state` S3 bucket (`us-east-1`) in an OSAC-controlled AWS account. The bucket is versioned, and OpenTofu takes a lock on the state (`osac.tfstate.tflock`) while it plans or applies. You need appropriate AWS credentials in order for OpenTofu to access the cached state. These should be provided in the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
 
 1. Acquire GitHub credentials.
 
     In order to apply the configuration, OpenTofu needs administrative access to our organization. You will need a token with at least `admin:org` and `repo` privileges for the `osac-project` organization. This should be provided in the `GITHUB_TOKEN` environment variable.
-
-[nerc]: https://nerc.mghpcc.org/
 
 ## Additional documentation
 
