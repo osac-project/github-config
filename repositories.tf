@@ -326,16 +326,17 @@ module "repo_osac_test_infra" {
       permission = github_organization_repository_role.ci_maintainer.name
     }
   ]
-  required_approvals = null
+  # Native GitHub review, as in osac: one approval, dropped when a new commit is pushed. Step A of the move to the shared
+  # flow of osac-ci: the two cheap checks. `CI` (ci.yml) sums up pre-commit and the script tests; `jira-reference` says the
+  # title names a Jira issue or NO-ISSUE. The E2E check is added in step B, once the suites have run for real.
+  # Both are posted by GitHub Actions. The old gates (e2e-*-gate, check-labels, pre-commit) are no longer produced.
+  allow_update_branch   = true
+  required_approvals    = 1
+  dismiss_stale_reviews = true
+
   required_status_checks = [
-    { context = "e2e-vmaas-gate", integration_id = 15368 },
-    { context = "e2e-bmaas-gate", integration_id = 15368 },
-    { context = "e2e-caas-gate", integration_id = 15368 },
-    { context = "check-labels", integration_id = 15368 },
-    # Job name in osac-test-infra/.github/workflows/pre-commit.yaml.
-    # That workflow must listen to merge_group or the queue waits
-    # check_response_timeout_minutes for a check that never reports.
-    { context = "pre-commit", integration_id = 15368 },
+    { context = "CI", integration_id = 15368 },
+    { context = "jira-reference", integration_id = 15368 },
   ]
   ruleset_bypass_team_ids = [
     github_team.all["managers"].id,
