@@ -333,10 +333,20 @@ module "repo_osac_test_infra" {
   allow_update_branch   = true
   required_approvals    = 1
   dismiss_stale_reviews = true
+  # A path listed in CODEOWNERS needs approval from its owner team (the CI definition under .github/ and the suite
+  # workflows need wg-infra), and a path with no owner needs nobody in particular.
+  require_code_owner_reviews = true
+  # ci-duty can force-merge ("Merge without waiting for requirements to be met"): that needs a bypass of the review
+  # requirements as well as of the ci-status-checks ruleset. Admins (managers) bypass them already.
+  pull_request_bypassers = ["osac-project/${github_team.all["ci-duty"].name}"]
 
+  # `E2E` is the full-install suites on a real cluster (e2e-pr.yml for a pull request, e2e-queue.yml for a merge queue
+  # entry). It is required from the OSAC CI app only (integration id 4966101, the app that writes it), so a workflow
+  # that is not that app cannot satisfy it.
   required_status_checks = [
     { context = "CI", integration_id = 15368 },
     { context = "jira-reference", integration_id = 15368 },
+    { context = "E2E", integration_id = 4966101 },
   ]
   ruleset_bypass_team_ids = [
     github_team.all["managers"].id,
@@ -344,13 +354,14 @@ module "repo_osac_test_infra" {
   ]
   environments = [{ name = "e2e-test" }]
 
+  # Full-install E2E gates can take over two hours; leave room for slow runs.
   merge_queue = {
     merge_method                      = "SQUASH"
     max_entries_to_build              = 4
     max_entries_to_merge              = 5
     min_entries_to_merge              = 1
     min_entries_to_merge_wait_minutes = 5
-    check_response_timeout_minutes    = 120
+    check_response_timeout_minutes    = 180
     grouping_strategy                 = "ALLGREEN"
   }
 }
