@@ -86,16 +86,16 @@ variable "labels" {
 }
 
 variable "teams" {
-  description = "Teams with access to this repository"
+  description = "Teams with access to this repository. permission is pull, push, maintain, triage, admin, or the name of a custom repository role (see organization.tf)."
   type = list(object({
     team_id    = string
     permission = string
   }))
   default = []
   validation {
-    error_message = "unknown permission: permission must be one of pull, push, maintain, triage, or admin"
+    error_message = "unknown permission: permission must be one of pull, push, maintain, triage, admin, or a custom repository role name"
     condition = alltrue([
-      for v in var.teams : contains(["pull", "push", "maintain", "triage", "admin"], v.permission)
+      for v in var.teams : contains(["pull", "push", "maintain", "triage", "admin"], v.permission) || can(regex("^[a-z][a-z0-9-]*-[a-z0-9-]+$", v.permission))
     ])
   }
 }

@@ -144,7 +144,7 @@ module "repo_osac" {
     },
     {
       team_id    = github_team.all["ci-duty"].name
-      permission = "push"
+      permission = github_organization_repository_role.ci_maintainer.name
     }
   ]
   # Native GitHub review: one approval, dropped when a new commit is pushed. Prow stays only for the Jira reference, the
@@ -323,7 +323,7 @@ module "repo_osac_test_infra" {
     },
     {
       team_id    = github_team.all["ci-duty"].name
-      permission = "push"
+      permission = github_organization_repository_role.ci_maintainer.name
     }
   ]
   required_approvals = null

@@ -53,6 +53,9 @@ Add them to the `ci-duty` team (`team-members/ci-duty.csv`). That team:
   checks, and on `osac` it may also bypass the required reviews (`pull_request_bypassers`).
   GitHub shows that checkbox only to someone who can bypass every rule on the branch. See
   `repositories.tf`.
+- Has the `ci-maintainer` custom repository role on `osac` and `osac-test-infra`: write, plus
+  management of the repository's Actions secrets, variables, environments, settings and
+  runners, and merge queue priority (jump the queue, solo merge). See `organization.tf`.
 
 The `managers` team holds the narrower `runner-manager` role, admin on the main
 repositories, and ruleset bypass on every repository with required status checks.

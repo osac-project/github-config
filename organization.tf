@@ -53,3 +53,25 @@ resource "github_organization_role_team" "cicd_admin_ci_duty" {
   role_id   = local.cicd_admin_role_id
   team_slug = github_team.all["ci-duty"].slug
 }
+
+# Custom repository role for CI duty on the CI repositories (osac and
+# osac-test-infra). The CI/CD admin role above covers only org-level Actions
+# settings, so without this, repository secrets and variables (BUF_TOKEN,
+# KONFLUX_SA_TOKEN, ...), environments, Actions settings and repository runners
+# need repository admin. Permission names come from
+#   gh api /orgs/osac-project/repository-fine-grained-permissions
+resource "github_organization_repository_role" "ci_maintainer" {
+  name        = "ci-maintainer"
+  description = "Write, plus management of the repository's Actions secrets, variables, environments, settings and runners, and merge queue priority"
+  base_role   = "write"
+
+  permissions = [
+    "write_repository_actions_secrets",
+    "write_repository_actions_variables",
+    "write_repository_actions_environments",
+    "write_repository_actions_settings",
+    "write_repository_actions_runners",
+    "jump_merge_queue",
+    "create_solo_merge_queue_entry",
+  ]
+}
