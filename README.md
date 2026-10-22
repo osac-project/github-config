@@ -55,7 +55,9 @@ Add them to the `ci-duty` team (`team-members/ci-duty.csv`). That team:
   `repositories.tf`.
 - Has the `ci-maintainer` custom repository role on `osac` and `osac-test-infra`: write, plus
   management of the repository's Actions secrets, variables, environments, settings and
-  runners, and merge queue priority (jump the queue, solo merge). See `organization.tf`.
+  runners, merge queue priority (jump the queue, solo merge), and bypass of branch
+  protections (which GitHub needs in order to offer the force-merge checkbox). See
+  `organization.tf`.
 
 The `managers` team holds the narrower `runner-manager` role, admin on the main
 repositories, and ruleset bypass on every repository with required status checks.

@@ -58,11 +58,15 @@ resource "github_organization_role_team" "cicd_admin_ci_duty" {
 # osac-test-infra). The CI/CD admin role above covers only org-level Actions
 # settings, so without this, repository secrets and variables (BUF_TOKEN,
 # KONFLUX_SA_TOKEN, ...), environments, Actions settings and repository runners
-# need repository admin. Permission names come from
+# need repository admin. It also lets the team merge past the branch protection
+# of a pull request (bypass_branch_protection), next to the ruleset and review
+# bypass it already has (ruleset_bypass_team_ids, pull_request_bypassers), so the
+# "Merge without waiting for requirements to be met" checkbox is offered to its
+# members as it is to admins. Permission names come from
 #   gh api /orgs/osac-project/repository-fine-grained-permissions
 resource "github_organization_repository_role" "ci_maintainer" {
   name        = "ci-maintainer"
-  description = "Write, plus management of the repository's Actions secrets, variables, environments, settings and runners, and merge queue priority"
+  description = "Write, plus management of the repository's Actions secrets, variables, environments, settings and runners, merge queue priority, and bypass of branch protections"
   base_role   = "write"
 
   permissions = [
@@ -73,5 +77,6 @@ resource "github_organization_repository_role" "ci_maintainer" {
     "write_repository_actions_runners",
     "jump_merge_queue",
     "create_solo_merge_queue_entry",
+    "bypass_branch_protection",
   ]
 }
