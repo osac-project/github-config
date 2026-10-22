@@ -66,7 +66,7 @@ resource "github_organization_role_team" "cicd_admin_ci_duty" {
 #   gh api /orgs/osac-project/repository-fine-grained-permissions
 resource "github_organization_repository_role" "ci_maintainer" {
   name        = "ci-maintainer"
-  description = "Write, plus management of the repository's Actions secrets, variables, environments, settings and runners, merge queue priority, and bypass of branch protections"
+  description = "Write, plus Actions secrets, variables, environments, settings and runners, merge queue priority, and branch protection bypass"
   base_role   = "write"
 
   permissions = [
