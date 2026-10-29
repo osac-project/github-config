@@ -23,6 +23,13 @@ When a commit is pushed to the `main` branch (e.g., when a pull request merges),
 1. Add a new row of the form `<team_name>,<description>,<privacy>,<contributor>`, where `<privacy>` can be either `closed` (visible to all members of the organization) or `secret` (visible to organization owners and members of this team).
    Set `<contributor>` to `true` to give the team push access on every repository that uses `local.contributor_teams` in `repositories.tf` (the working group teams), or `false` otherwise.
 
+### Let a team approve changes (be a maintainer)?
+
+1. Open `teams.csv`
+1. Set the `maintainer` column of the team to `true`.
+
+The team then becomes a child of the `maintainers` team, whose members are everyone in those teams. A team that has write access to a repository and is visible (`closed`) should be one: `@osac-project/maintainers` is the owner of every path in the `osac` CODEOWNERS that no other rule names, so a person in no maintainer team cannot approve it, and a bot (CodeRabbit included) never can.
+
 ### Add an organization member to a team?
 
 1. Open `team-members/<team>.csv`
