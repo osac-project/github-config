@@ -21,6 +21,17 @@ resource "github_team" "maintainers" {
   privacy     = "closed"
 }
 
+resource "github_team_settings" "maintainers" {
+  team_id = github_team.maintainers.id
+  # Team-only requests still email members; assign one reviewer so notify = false suppresses whole-team notifications.
+  notify = false
+
+  review_request_delegation {
+    algorithm    = "LOAD_BALANCE"
+    member_count = 1
+  }
+}
+
 # Populate team members based on the csv files in the team-members directory.
 resource "github_team_membership" "members" {
   for_each = { for tm in local.team_members : tm.name => tm }
