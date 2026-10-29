@@ -136,7 +136,8 @@ module "repo_osac" {
   # Always show "Update branch" (merge or rebase). The merge queue does not
   # require up-to-date branches, so GitHub otherwise hides the button.
   allow_update_branch = true
-  # The working-group teams, and their parent "maintainers", the owner of every path in CODEOWNERS that no other rule names.
+  # The contributor teams, and "maintainers" (the parent of the wg-* teams): the owner of every path in CODEOWNERS that no
+  # other rule names.
   contributor_teams = concat(local.contributor_teams, [github_team.maintainers.name])
   teams = [
     {
