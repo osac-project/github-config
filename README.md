@@ -28,7 +28,7 @@ When a commit is pushed to the `main` branch (e.g., when a pull request merges),
 1. Open `teams.csv`
 1. Set the `maintainer` column of the team to `true`.
 
-The team then becomes a child of the `maintainers` team, whose members are everyone in those teams. A team that has write access to a repository and is visible (`closed`) should be one: `@osac-project/maintainers` is the owner of every path in the `osac` CODEOWNERS that no other rule names, so a person in no maintainer team cannot approve it, and a bot (CodeRabbit included) never can.
+The team then becomes a child of the `maintainers` team, whose members are everyone in those teams. Today they are the working-group (`wg-*`) teams. `@osac-project/maintainers` is the owner of every path in the `osac` CODEOWNERS that no other rule names, so a person in no maintainer team cannot approve it, and a bot (CodeRabbit included) never can. The team must be visible (`closed`) and have write access to `osac`.
 
 ### Add an organization member to a team?
 

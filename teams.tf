@@ -11,10 +11,10 @@ resource "github_team" "all" {
   parent_team_id = each.value.maintainer == "true" ? github_team.maintainers.id : null
 }
 
-# The parent of every team flagged "maintainer" in teams.csv (the teams that have write access to the repositories). GitHub
-# counts the members of a child team as members of its parent, so "@osac-project/maintainers" in CODEOWNERS means "a person
-# of any of those teams" and a bot, which is in none of them, is not one. Child teams inherit the access of their parent;
-# the parent only has push on osac (see repositories.tf), which they all have already.
+# The parent of every working-group team (the teams flagged "maintainer" in teams.csv: the wg-* teams). GitHub counts the
+# members of a child team as members of its parent, so "@osac-project/maintainers" in CODEOWNERS means "a person of any
+# working group", and a bot, which is in none of them, is not one. Child teams inherit the access of their parent; the
+# parent only has push on osac (see repositories.tf), which they all have already.
 resource "github_team" "maintainers" {
   name        = "maintainers"
   description = "Everyone who may approve changes: the members of the working-group teams (their parent team)"

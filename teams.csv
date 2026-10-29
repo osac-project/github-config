@@ -6,11 +6,11 @@ personas-wg,Personas working group,secret,false,false
 documentation-wg,Documentation working group,secret,false,false
 wg-infra,OSAC Infrastructure working group,closed,true,true
 wg-storage,OSAC Storage working group,closed,true,true
-managers,OSAC working group managers,closed,true,true
-architects,Architects across all OSAC working groups,closed,true,true
+managers,OSAC working group managers,closed,true,false
+architects,Architects across all OSAC working groups,closed,true,false
 wg-leads,Leads of the OSAC working groups,closed,true,true
 ci-duty,CI duty and merge assistance - force-merge on osac osac-test-infra and enhancement-proposals and CI/CD admin,closed,false,false
-contributors,OSAC contributors outside the working groups,closed,true,true
+contributors,OSAC contributors outside the working groups,closed,true,false
 wg-architecture,OSAC Architecture working group,closed,true,true
 wg-bmaas,OSAC BMaaS working group,closed,true,true
 wg-caas,OSAC CaaS working group,closed,true,true
