@@ -20,15 +20,18 @@ When a commit is pushed to the `main` branch (e.g., when a pull request merges),
 ### Add a new team?
 
 1. Open `teams.csv`
-1. Add a new row of the form `<team_name>,<description>,<privacy>,<contributor>`, where `<privacy>` can be either `closed` (visible to all members of the organization) or `secret` (visible to organization owners and members of this team).
+1. Add a new row of the form `<team_name>,<description>,<privacy>,<contributor>,<maintainer>`, where `<privacy>` can be either `closed` (visible to all members of the organization) or `secret` (visible to organization owners and members of this team).
    Set `<contributor>` to `true` to give the team push access on every repository that uses `local.contributor_teams` in `repositories.tf` (the working group teams), or `false` otherwise.
+   Set `<maintainer>` to `true` or `false` (see the next section); a team that is not explicitly authorized to approve changes is `false`.
 
 ### Let a team approve changes (be a maintainer)?
 
 1. Open `teams.csv`
 1. Set the `maintainer` column of the team to `true`.
 
-The team then becomes a child of the `maintainers` team, whose members are everyone in those teams. Today they are the working-group (`wg-*`) teams. `@osac-project/maintainers` is the owner of every path in the `osac` CODEOWNERS that no other rule names, so a person in no maintainer team cannot approve it, and a bot (CodeRabbit included) never can. The team must be visible (`closed`) and have write access to `osac`.
+The team then becomes a child of the `maintainers` team, whose members are everyone in those teams, and it inherits the push access that `maintainers` has on `osac`. A team joins only when it is explicitly authorized both to have that push access on `osac` and to approve changes there as a code owner; having write access to a repository is not enough on its own. The team must be visible (`closed`). Today they are the working-group (`wg-*`) teams.
+
+The point of the team is `osac`'s CODEOWNERS: a follow-up change to that file will make `@osac-project/maintainers` the owner of every path that no other rule names, so that a person in one of these teams has to approve it and a bot (CodeRabbit included) never counts. Until that change is merged, the team is only created, and paths with no owner can still be approved by a bot.
 
 ### Add an organization member to a team?
 
