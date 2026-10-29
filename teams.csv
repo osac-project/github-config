@@ -1,26 +1,26 @@
-name,description,privacy,contributor
-org-admins,Organization Administrators,secret,false
-fulfillment-wg,Fulfillment working group,secret,false
-observability-wg,observability working group,secret,false
-personas-wg,Personas working group,secret,false
-documentation-wg,Documentation working group,secret,false
-wg-infra,OSAC Infrastructure working group,closed,true
-wg-storage,OSAC Storage working group,closed,true
-managers,OSAC working group managers,closed,true
-architects,Architects across all OSAC working groups,closed,true
-wg-leads,Leads of the OSAC working groups,closed,true
-ci-duty,CI duty and merge assistance - force-merge on osac osac-test-infra and enhancement-proposals and CI/CD admin,closed,false
-contributors,OSAC contributors outside the working groups,closed,true
-wg-architecture,OSAC Architecture working group,closed,true
-wg-bmaas,OSAC BMaaS working group,closed,true
-wg-caas,OSAC CaaS working group,closed,true
-wg-vmaas,OSAC VMaaS working group,closed,true
-wg-maas,OSAC MaaS working group,closed,true
-wg-enclave,OSAC Enclave working group,closed,true
-wg-connectivity,OSAC Connectivity & Fabric working group,closed,true
-wg-core,OSAC Core working group,closed,true
-wg-metering,OSAC Metering working group,closed,true
-wg-ui,OSAC UI working group,closed,true
-wg-e2e,OSAC E2E working group,closed,true
-wg-soln-eng,OSAC Solution Engineering working group,closed,true
-wg-qe,OSAC QE working group,closed,true
+name,description,privacy,contributor,maintainer
+org-admins,Organization Administrators,secret,false,false
+fulfillment-wg,Fulfillment working group,secret,false,false
+observability-wg,observability working group,secret,false,false
+personas-wg,Personas working group,secret,false,false
+documentation-wg,Documentation working group,secret,false,false
+wg-infra,OSAC Infrastructure working group,closed,true,true
+wg-storage,OSAC Storage working group,closed,true,true
+managers,OSAC working group managers,closed,true,true
+architects,Architects across all OSAC working groups,closed,true,true
+wg-leads,Leads of the OSAC working groups,closed,true,true
+ci-duty,CI duty and merge assistance - force-merge on osac osac-test-infra and enhancement-proposals and CI/CD admin,closed,false,false
+contributors,OSAC contributors outside the working groups,closed,true,true
+wg-architecture,OSAC Architecture working group,closed,true,true
+wg-bmaas,OSAC BMaaS working group,closed,true,true
+wg-caas,OSAC CaaS working group,closed,true,true
+wg-vmaas,OSAC VMaaS working group,closed,true,true
+wg-maas,OSAC MaaS working group,closed,true,true
+wg-enclave,OSAC Enclave working group,closed,true,true
+wg-connectivity,OSAC Connectivity & Fabric working group,closed,true,true
+wg-core,OSAC Core working group,closed,true,true
+wg-metering,OSAC Metering working group,closed,true,true
+wg-ui,OSAC UI working group,closed,true,true
+wg-e2e,OSAC E2E working group,closed,true,true
+wg-soln-eng,OSAC Solution Engineering working group,closed,true,true
+wg-qe,OSAC QE working group,closed,true,true
