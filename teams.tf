@@ -16,16 +16,18 @@ resource "github_team" "all" {
 # working group", and a bot, which is in none of them, is not one. Child teams inherit the access of their parent; the
 # parent only has push on osac (see repositories.tf), which they all have already.
 resource "github_team" "maintainers" {
-  name        = "maintainers"
-  description = "Everyone who may approve changes: the members of the working-group teams (their parent team)"
-  privacy     = "closed"
+  name                 = "maintainers"
+  description          = "Everyone who may approve changes: the members of the working-group teams (their parent team)"
+  privacy              = "closed"
+  notification_setting = "notifications_disabled" # see the comment below: nobody is told when the team is requested
 }
 
 # The code review settings of the maintainers team: review request delegation is OFF. CODEOWNERS requests this team for
 # every path no working group owns, and any member may approve; GitHub must not pick one member of it for the pull request
 # (the provider enables delegation when a review_request_delegation block is present, and this resource has none, so every
-# apply keeps it off). Whether members are notified is the team's notification setting (notification_setting of the team),
-# which the provider cannot manage: it is set to "notifications_disabled" through the API, see README.md.
+# apply keeps it off). Notifications are the notification_setting of the team above: CODEOWNERS requests this team on every
+# pull request no working group owns, and nobody is to be told. The provider defaults that field to "notifications_enabled"
+# and sets it on every apply, so it has to be stated.
 resource "github_team_settings" "maintainers" {
   team_id = github_team.maintainers.id
 }
