@@ -170,20 +170,31 @@ jobs:
       # a pull request that CODEOWNERS sends to the team, and notifies only that member, not the whole team. The provider
       # (github_team_settings) cannot set includeChildTeamMembers, which is what leaves the members of the working-group
       # teams out of the assignment, so it is set here, on every apply: the mutation is idempotent, and it puts the setting
-      # back if someone changed it by hand. Not readable back (the team has no field for includeChildTeamMembers).
+      # back if someone changed it by hand. It is not readable back (the team has no field for includeChildTeamMembers).
+      # It also runs after an apply that failed on something else (a broken resource must not hold the setting back), but
+      # only when osac-ci-bot is a direct member of the team: with nobody eligible, the assignment has no one to pick.
       - name: Maintainers team review assignment
-        if: ${{ steps.tofu_apply.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.tofu_apply.outcome != 'skipped' }}
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           ORG: ${{ github.repository_owner }}
+          SINK: osac-ci-bot
         run: |
           set -euo pipefail
-          team_id=$(gh api graphql -f org="${ORG}" -f query='
-            query($org: String!) { organization(login: $org) { team(slug: "maintainers") { id } } }' \
-            --jq '.data.organization.team.id // empty')
+          answer=$(gh api graphql -f org="${ORG}" -f query='
+            query($org: String!) {
+              organization(login: $org) {
+                team(slug: "maintainers") { id members(membership: IMMEDIATE, first: 100) { nodes { login } } }
+              }
+            }')
+          team_id=$(jq -r '.data.organization.team.id // empty' <<<"${answer}")
           if [[ -z "${team_id}" ]]; then
             echo "::error::The maintainers team was not found." >&2
             exit 1
+          fi
+          if ! jq -e --arg sink "${SINK}" '.data.organization.team.members.nodes | map(.login) | index($sink)' <<<"${answer}" >/dev/null; then
+            echo "::warning::${SINK} is not a direct member of maintainers (yet): the review assignment is left as it is."
+            exit 0
           fi
           gh api graphql -f id="${team_id}" -f query='
             mutation($id: ID!) {
