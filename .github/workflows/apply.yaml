@@ -166,6 +166,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           EXCLUDE_ADDRESSES: ${{ inputs.exclude_addresses }}
+      # Review assignment of the maintainers team: GitHub assigns one DIRECT member of the team (osac-ci-bot, see teams.tf) to
+      # a pull request that CODEOWNERS sends to the team, and notifies only that member, not the whole team. The provider
+      # (github_team_settings) cannot set includeChildTeamMembers, which is what leaves the members of the working-group
+      # teams out of the assignment, so it is set here, on every apply: the mutation is idempotent, and it puts the setting
+      # back if someone changed it by hand. Not readable back (the team has no field for includeChildTeamMembers).
+      - name: Maintainers team review assignment
+        if: ${{ steps.tofu_apply.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          ORG: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          team_id=$(gh api graphql -f org="${ORG}" -f query='
+            query($org: String!) { organization(login: $org) { team(slug: "maintainers") { id } } }' \
+            --jq '.data.organization.team.id // empty')
+          if [[ -z "${team_id}" ]]; then
+            echo "::error::The maintainers team was not found." >&2
+            exit 1
+          fi
+          gh api graphql -f id="${team_id}" -f query='
+            mutation($id: ID!) {
+              updateTeamReviewAssignment(input: {
+                id: $id, enabled: true, algorithm: LOAD_BALANCE, teamMemberCount: 1,
+                notifyTeam: false, includeChildTeamMembers: false, removeTeamRequest: false
+              }) { team { slug reviewRequestDelegationEnabled reviewRequestDelegationMemberCount reviewRequestDelegationNotifyTeam } }
+            }' --jq '.data.updateTeamReviewAssignment.team'
       # tofu apply isn't atomic and doesn't roll back changes already
       # applied earlier in the same run if a later resource fails -- but a
       # hard error on one resource does still stop the run before anything

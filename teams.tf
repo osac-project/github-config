@@ -16,20 +16,32 @@ resource "github_team" "all" {
 # working group", and a bot, which is in none of them, is not one. Child teams inherit the access of their parent; the
 # parent only has push on osac (see repositories.tf), which they all have already.
 resource "github_team" "maintainers" {
-  name                 = "maintainers"
-  description          = "Everyone who may approve changes: the members of the working-group teams (their parent team)"
-  privacy              = "closed"
-  notification_setting = "notifications_disabled" # see the comment below: nobody is told when the team is requested
+  name        = "maintainers"
+  description = "Everyone who may approve changes: the members of the working-group teams (their parent team)"
+  privacy     = "closed"
 }
 
-# The code review settings of the maintainers team: review request delegation is OFF. CODEOWNERS requests this team for
-# every path no working group owns, and any member may approve; GitHub must not pick one member of it for the pull request
-# (the provider enables delegation when a review_request_delegation block is present, and this resource has none, so every
-# apply keeps it off). Notifications are the notification_setting of the team above: CODEOWNERS requests this team on every
-# pull request no working group owns, and nobody is to be told. The provider defaults that field to "notifications_enabled"
-# and sets it on every apply, so it has to be stated.
-resource "github_team_settings" "maintainers" {
-  team_id = github_team.maintainers.id
+# The only DIRECT member of maintainers. A pull request that CODEOWNERS sends to maintainers has GitHub assign one member of
+# the team to review it (review assignment, set after every apply, see .github/workflows/apply.yaml), and only that member is
+# notified, not the 80-odd people of the working groups. The assignment is limited to direct members (the members of the
+# child teams are left out), so it always picks this account, which approves nothing: nobody is picked, nobody is
+# broadcast to, and any member of a working group may still approve (members of a child team count as members of
+# maintainers for CODEOWNERS). osac-ci-bot is already a member of the organization and of wg-infra.
+resource "github_team_membership" "maintainers_review_sink" {
+  team_id  = github_team.maintainers.id
+  username = "osac-ci-bot"
+  role     = "member"
+}
+
+# Review assignment used to be managed here (github_team_settings), but the provider cannot set the option that leaves the
+# child teams out of the assignment, and an apply would undo it. It is set by apply.yaml instead; forget the old resource
+# without destroying it.
+removed {
+  from = github_team_settings.maintainers
+
+  lifecycle {
+    destroy = false
+  }
 }
 
 # Populate team members based on the csv files in the team-members directory.

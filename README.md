@@ -33,10 +33,12 @@ The team then becomes a child of the `maintainers` team, whose members are every
 
 The point of the team is `osac`'s CODEOWNERS: a follow-up change to that file will make `@osac-project/maintainers` the owner of every path that no other rule names, so that a person in one of these teams has to approve it and a bot (CodeRabbit included) never counts. Until that change is merged, the team is only created, and paths with no owner can still be approved by a bot.
 
-**Notifications and review assignment.** A pull request requests `maintainers` as a team, and every member may approve. Two settings decide who is told, and both are set so that nobody is picked and nobody is broadcast to:
+**Notifications and review assignment.** A pull request that CODEOWNERS sends to `maintainers` requests the team, and every member of a working group may approve. GitHub notifies every member of a team that is requested for review, and its team notification setting does not change that (it only covers @mentions). The only switch is *review assignment* (Code review in the team's settings): GitHub assigns members and notifies only them. So that nobody is picked and nobody is broadcast to:
 
-- *Review request delegation* (GitHub: Code review, "Enable auto assignment") is **off**. It would pick one member of the team for each pull request. `teams.tf` keeps it off: the `github_team_settings` resource has no `review_request_delegation` block (the provider enables delegation when the block is present), so every apply turns it off again.
-- The team's *notification setting* is `notifications_disabled` (`notification_setting` on the team in `teams.tf`), so the members are not notified when the team is requested. The provider sets this field on every apply and defaults it to `notifications_enabled`, so it must be in the configuration: a change made by hand in the team's settings is undone at the next apply.
+- `osac-ci-bot` is the only **direct** member of `maintainers` (`github_team_membership.maintainers_review_sink` in `teams.tf`). It approves nothing.
+- Review assignment is on for `maintainers`: `LOAD_BALANCE`, one member, the team is not notified, and the members of the child teams are **left out** (`includeChildTeamMembers: false`), so the assignment always picks the bot. The pull request lists `maintainers` and `osac-ci-bot` as reviewers, and the bot's request stays pending (nothing waits for it). Approval is not affected: members of a child team count as members of `maintainers` for CODEOWNERS.
+- The provider cannot set `includeChildTeamMembers` (and the team has no field to read it back), so `.github/workflows/apply.yaml` sets all of it with the GraphQL mutation `updateTeamReviewAssignment` after every apply, scheduled ones included. `github_team_settings.maintainers` is gone from the configuration (`removed` block, nothing destroyed).
+- The teams that own a folder in CODEOWNERS (`wg-infra`, `wg-vmaas`, ...) are requested and notified as usual.
 
 ### Add an organization member to a team?
 
