@@ -192,9 +192,16 @@ jobs:
             echo "::error::The maintainers team was not found." >&2
             exit 1
           fi
+          direct=$(jq -r '.data.organization.team.members.nodes | map(.login) | join(" ")' <<<"${answer}")
           if ! jq -e --arg sink "${SINK}" '.data.organization.team.members.nodes | map(.login) | index($sink)' <<<"${answer}" >/dev/null; then
             echo "::warning::${SINK} is not a direct member of maintainers (yet): the review assignment is left as it is."
             exit 0
+          fi
+          # Only direct members can be assigned, so the assignment stays harmless only while the bot is the ONLY one: anyone
+          # else added to the team directly would be picked for pull requests.
+          if [[ "${direct}" != "${SINK}" ]]; then
+            echo "::error::maintainers has direct members besides ${SINK} (${direct}): they would be assigned to pull requests. Remove them from the team (its members are the working-group teams), then run this again." >&2
+            exit 1
           fi
           gh api graphql -f id="${team_id}" -f query='
             mutation($id: ID!) {
