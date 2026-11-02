@@ -33,6 +33,11 @@ The team then becomes a child of the `maintainers` team, whose members are every
 
 The point of the team is `osac`'s CODEOWNERS: a follow-up change to that file will make `@osac-project/maintainers` the owner of every path that no other rule names, so that a person in one of these teams has to approve it and a bot (CodeRabbit included) never counts. Until that change is merged, the team is only created, and paths with no owner can still be approved by a bot.
 
+**Notifications and review assignment.** A pull request requests `maintainers` as a team, and every member may approve. Two settings decide who is told, and both are set so that nobody is picked and nobody is broadcast to:
+
+- *Review request delegation* (GitHub: Code review, "Enable auto assignment") is **off**. It would pick one member of the team for each pull request. `teams.tf` keeps it off: the `github_team_settings` resource has no `review_request_delegation` block (the provider enables delegation when the block is present), so every apply turns it off again.
+- The team's *notification setting* is `notifications_disabled`, so the members are not notified when the team is requested. The provider has no argument for it, so Terraform neither sets nor reverts it: set it with `gh api -X PATCH orgs/osac-project/teams/maintainers -f notification_setting=notifications_disabled` (or Team settings, Notifications) and check that it stays.
+
 ### Add an organization member to a team?
 
 1. Open `team-members/<team>.csv`

@@ -21,15 +21,13 @@ resource "github_team" "maintainers" {
   privacy     = "closed"
 }
 
+# The code review settings of the maintainers team: review request delegation is OFF. CODEOWNERS requests this team for
+# every path no working group owns, and any member may approve; GitHub must not pick one member of it for the pull request
+# (the provider enables delegation when a review_request_delegation block is present, and this resource has none, so every
+# apply keeps it off). Whether members are notified is the team's notification setting (notification_setting of the team),
+# which the provider cannot manage: it is set to "notifications_disabled" through the API, see README.md.
 resource "github_team_settings" "maintainers" {
   team_id = github_team.maintainers.id
-  # Team-only requests still email members; assign one reviewer so notify = false suppresses whole-team notifications.
-  notify = false
-
-  review_request_delegation {
-    algorithm    = "LOAD_BALANCE"
-    member_count = 1
-  }
 }
 
 # Populate team members based on the csv files in the team-members directory.
