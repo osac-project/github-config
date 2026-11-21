@@ -77,6 +77,10 @@ Add them to the `ci-duty` team (`team-members/ci-duty.csv`). That team:
   checks, and on `osac` it may also bypass the required reviews (`pull_request_bypassers`).
   GitHub shows that checkbox only to someone who can bypass every rule on the branch. See
   `repositories.tf`.
+- Holds GitHub's predefined **App manager** organization role, so its members can register
+  and manage the GitHub Apps the organization owns (the OSAC CI app, for example). It does not
+  let them install or uninstall an app, or list one in the Marketplace: an organization owner
+  does that. See `organization.tf`.
 - Has the `ci-maintainer` custom repository role on `osac` and `osac-test-infra`: write, plus
   management of the repository's Actions secrets, variables, environments, settings and
   runners, merge queue priority (jump the queue, solo merge), and bypass of branch
