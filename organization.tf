@@ -54,6 +54,25 @@ resource "github_organization_role_team" "cicd_admin_ci_duty" {
   team_slug = github_team.all["ci-duty"].slug
 }
 
+# Assign GitHub's predefined "App manager" organization role to the ci-duty team,
+# so it can register and manage the GitHub Apps owned by the organization (the OSAC
+# CI app, for example) without being org owners. The role does not let them install
+# or uninstall an app on the organization, or list an app in the Marketplace: an
+# organization owner does that. Unlike the CI/CD admin role above, the API's name
+# for this role is known: `gh api /orgs/osac-project/organization-roles` lists it
+# as "app_manager" (source "Predefined").
+locals {
+  app_manager_role_id = one([
+    for r in data.github_organization_roles.all.roles : r.role_id
+    if r.source == "Predefined" && r.name == "app_manager"
+  ])
+}
+
+resource "github_organization_role_team" "app_manager_ci_duty" {
+  role_id   = local.app_manager_role_id
+  team_slug = github_team.all["ci-duty"].slug
+}
+
 # Custom repository role for CI duty on the CI repositories (osac and
 # osac-test-infra). The CI/CD admin role above covers only org-level Actions
 # settings, so without this, repository secrets and variables (BUF_TOKEN,
