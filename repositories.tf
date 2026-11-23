@@ -537,11 +537,14 @@ module "repo_enhancement_proposals" {
 }
 
 module "repo_osac_test_infra" {
-  source            = "./modules/common_repository"
-  visibility        = "public"
-  name              = "osac-test-infra"
-  description       = "Ansible-based test infrastructure for OSAC end-to-end testing"
-  contributor_teams = local.contributor_teams
+  source      = "./modules/common_repository"
+  visibility  = "public"
+  name        = "osac-test-infra"
+  description = "Ansible-based test infrastructure for OSAC end-to-end testing"
+  # The contributor teams, and "maintainers" (the parent of the wg-* teams), as in osac: the owner of every path in
+  # CODEOWNERS that no other rule names. A team that CODEOWNERS names needs write access, or GitHub reports the owner
+  # as unknown and assigns nobody.
+  contributor_teams = concat(local.contributor_teams, [github_team.maintainers.name])
   teams = [
     {
       team_id    = github_team.all["managers"].name
